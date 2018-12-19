@@ -1,8 +1,9 @@
 ﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
-using System.Text;
 
 namespace DarkSlidesTrackListParser
 {
@@ -35,19 +36,13 @@ namespace DarkSlidesTrackListParser
                     string ext = Path.GetExtension(hrefValue);
                     if (ext != ".zip")
                     {
-                        track.ErrorInfo += string.Format("Expected .zip file, got {0} file. ", ext);
+                        track.ErrorInfo += string.Format("Expected .zip file, got {0} file; ", ext);
                         track.Valid = false;
                     }
-
-                    int slot = 0;
-                    track.TrackType = GetTrackType(hrefValue, out slot);
-                    if(track.TrackType == TrackType.Unknown)
+                    else
                     {
-                        track.ErrorInfo += string.Format("Unknown track type. ", ext);
-                        track.Valid = false;
+                        track = PeekZipFile(track.DarkSlidesTrackUrl, track);
                     }
-
-                    track.SlotNumber = slot;
 
                     tracks.Add(track);
                 }
@@ -55,37 +50,50 @@ namespace DarkSlidesTrackListParser
             return tracks.ToArray();
         }
 
-        private TrackType GetTrackType(string fileName, out int slot)
+        private TrackType GetTrackType(string fileName)
         {
             TrackType type = TrackType.Unknown;
-            slot = 0;
             for (int i = 0; i < 8; ++i)
             {
-                string nationalPattern = string.Format("_N{0}.zip", i+1);
-                string supercrossPattern = string.Format("_S{0}.zip", i + 1);
-                string freeRidePattern = string.Format("_F{0}.zip", i + 1);
+                string nationalPattern = string.Format("Beta_Nat_Track", i+1);
+                string supercrossPattern = string.Format("Beta_Sx_Track", i + 1);
+                string freeRidePattern = string.Format("Beta_Track", i + 1);
 
                 if(fileName.Contains(nationalPattern))
                 {
                     type = TrackType.National;
-                    slot = i + 1;
                     break;
                 }
                 else if(fileName.Contains(supercrossPattern))
                 {
                     type = TrackType.Supercross;
-                    slot = i + 1;
                     break;
                 }
                 else if (fileName.Contains(freeRidePattern))
                 {
                     type = TrackType.FreeRide;
-                    slot = i + 1;
                     break;
                 }
             }
 
             return type;
+        }
+
+        private int GetSlot(string fileName)
+        {
+            int slot = 0;
+            const int MaxSlots = 7;
+            for(int i = 0; i < MaxSlots; ++i)
+            {
+                string format = string.Format("Slot_{0}.dx9", i + 1);
+                if(fileName.Contains(format))
+                {
+                    slot = i + 1;
+                    break;
+                }
+            }
+
+            return slot;
         }
 
         private string GetTrackListHtml()
@@ -96,6 +104,99 @@ namespace DarkSlidesTrackListParser
                 html = client.DownloadString("http://ds19.eu/tracklist.php");
             }
             return html;
+        }
+
+        private Track PeekZipFile(string url, Track track)
+        {
+            using (WebClient client = new WebClient())
+            {
+                using (Stream memoryStream = new MemoryStream(client.DownloadData(url)))
+                {
+                    using (ZipArchive archive = new ZipArchive(memoryStream))
+                    {
+                        track = ValidateZipArchive(archive, track);
+                    }
+                }
+            }
+            
+            //Force the garbage collector to run. We care more about memory than performance when this is running in the cloud.
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            return track;
+        }
+
+        private Track ValidateZipArchive(ZipArchive archive, Track track)
+        {
+            int databaseCount = 0;
+            int levelCount = 0;
+            int packageCount = 0;
+            int sceneCount = 0;
+
+            string databaseExt = ".dx9.database";
+            string levelExt = ".dx9.level";
+            string packageExt = ".dx9.package";
+            string sceneExt = ".dx9.scene";
+
+            foreach (ZipArchiveEntry entry in archive.Entries)
+            {
+                if(track.TrackType == TrackType.Unknown)
+                {
+                    track.TrackType = GetTrackType(entry.FullName);
+                    track.SlotNumber = GetSlot(entry.FullName);
+                }
+
+                if (entry.FullName.EndsWith(databaseExt, StringComparison.OrdinalIgnoreCase))
+                {
+                    ++databaseCount;
+                }
+                else if (entry.FullName.EndsWith(levelExt, StringComparison.OrdinalIgnoreCase))
+                {
+                    ++levelCount;
+                }
+                else if (entry.FullName.EndsWith(packageExt, StringComparison.OrdinalIgnoreCase))
+                {
+                    ++packageCount;
+                }
+                else if (entry.FullName.EndsWith(sceneExt, StringComparison.OrdinalIgnoreCase))
+                {
+                    ++sceneCount;
+                }
+            }
+
+            if (track.TrackType == TrackType.Unknown)
+            {
+                track.ErrorInfo += "Unknown track type; ";
+                track.Valid = false;
+            }
+
+            if (track.SlotNumber == 0)
+            {
+                track.ErrorInfo += "Unknown slot; ";
+                track.Valid = false;
+            }
+
+            track = CheckForRequiredFiles(track, databaseExt, databaseCount);
+            track = CheckForRequiredFiles(track, levelExt, levelCount);
+            track = CheckForRequiredFiles(track, packageExt, packageCount);
+            track = CheckForRequiredFiles(track, sceneExt, sceneCount);
+
+            return track;
+        }
+
+        private Track CheckForRequiredFiles(Track track, string fileExtention, int timesFileAppearsInZip)
+        {
+            if (timesFileAppearsInZip == 0)
+            {
+                track.ErrorInfo += string.Format("Missing *{0} file; ", fileExtention);
+                track.Valid = false;
+            }
+            else if (timesFileAppearsInZip > 1)
+            {
+                track.ErrorInfo += string.Format("Expecting 1 *{0} file but got {1}. Please only upload one track per zip file; ", fileExtention, timesFileAppearsInZip);
+                track.Valid = false;
+            }
+            return track;
         }
     }
 }

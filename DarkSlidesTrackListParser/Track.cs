@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DarkSlidesTrackListParser
+﻿namespace DarkSlidesTrackListParser
 {
     public enum TrackType
     {
@@ -16,6 +12,10 @@ namespace DarkSlidesTrackListParser
     {
         public Track()
         {
+            TrackType = TrackType.Unknown;
+            TrackName = string.Empty;
+            DarkSlidesTrackUrl = string.Empty;
+            SlotNumber = 0;
             ErrorInfo = string.Empty;
             Valid = true;
         }

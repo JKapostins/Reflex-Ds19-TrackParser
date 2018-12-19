@@ -32,6 +32,8 @@ namespace DarkSlidesTrackListParser
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Processing the tracks from darkslides server. This will take some time, go grab a drink.");
+            var beginTime = DateTime.Now;
             TrackListParser parser = new TrackListParser();
             var tracks = parser.Parse();
 
@@ -52,6 +54,9 @@ namespace DarkSlidesTrackListParser
             {
                 Console.WriteLine(string.Format("Name: {0}, Type: {1}, Slot: {2}, Reason: {3}", track.TrackName, PrintTrackType(track.TrackType), track.SlotNumber, track.ErrorInfo));
             }
+
+            var endTime = DateTime.Now;
+            Console.WriteLine(string.Format("The process took {0} seconds to complete.", endTime.Second - beginTime.Second));
         }
     }
 }
