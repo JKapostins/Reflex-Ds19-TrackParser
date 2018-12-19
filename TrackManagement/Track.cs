@@ -1,4 +1,4 @@
-﻿namespace DarkSlidesTrackListParser
+﻿namespace TrackManagement
 {
     public enum TrackType
     {

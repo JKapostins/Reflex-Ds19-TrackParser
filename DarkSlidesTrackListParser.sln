@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncTrackLambda", "SyncTrac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncTrackLambda.Tests", "SyncTrackLambda.Tests\SyncTrackLambda.Tests.csproj", "{AE40A822-F501-4499-81F2-CA51F7EB2293}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackManagement", "TrackManagement\TrackManagement.csproj", "{1B23B192-A811-4F47-9DD1-5FC4E97CCE2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AE40A822-F501-4499-81F2-CA51F7EB2293}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE40A822-F501-4499-81F2-CA51F7EB2293}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE40A822-F501-4499-81F2-CA51F7EB2293}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B23B192-A811-4F47-9DD1-5FC4E97CCE2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B23B192-A811-4F47-9DD1-5FC4E97CCE2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B23B192-A811-4F47-9DD1-5FC4E97CCE2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B23B192-A811-4F47-9DD1-5FC4E97CCE2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

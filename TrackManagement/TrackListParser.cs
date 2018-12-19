@@ -5,7 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 
-namespace DarkSlidesTrackListParser
+namespace TrackManagement
 {
     public class TrackListParser
     {
