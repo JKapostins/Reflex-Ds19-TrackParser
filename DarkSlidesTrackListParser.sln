@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DarkSlidesTrackListParser", "DarkSlidesTrackListParser\DarkSlidesTrackListParser.csproj", "{F588F25C-AB52-4D1A-A874-236548AF5275}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DarkSlidesTrackListParser", "DarkSlidesTrackListParser\DarkSlidesTrackListParser.csproj", "{F588F25C-AB52-4D1A-A874-236548AF5275}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncTrackLambda", "SyncTrackLambda\SyncTrackLambda.csproj", "{0DCC36FE-9D2A-4919-9BDD-EE116B8B4455}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncTrackLambda.Tests", "SyncTrackLambda.Tests\SyncTrackLambda.Tests.csproj", "{AE40A822-F501-4499-81F2-CA51F7EB2293}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{F588F25C-AB52-4D1A-A874-236548AF5275}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F588F25C-AB52-4D1A-A874-236548AF5275}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F588F25C-AB52-4D1A-A874-236548AF5275}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DCC36FE-9D2A-4919-9BDD-EE116B8B4455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DCC36FE-9D2A-4919-9BDD-EE116B8B4455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DCC36FE-9D2A-4919-9BDD-EE116B8B4455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DCC36FE-9D2A-4919-9BDD-EE116B8B4455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE40A822-F501-4499-81F2-CA51F7EB2293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE40A822-F501-4499-81F2-CA51F7EB2293}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE40A822-F501-4499-81F2-CA51F7EB2293}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE40A822-F501-4499-81F2-CA51F7EB2293}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
