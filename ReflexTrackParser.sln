@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DarkSlidesTrackListParser", "DarkSlidesTrackListParser\DarkSlidesTrackListParser.csproj", "{F588F25C-AB52-4D1A-A874-236548AF5275}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReflexTrackParser", "ReflexTrackParser\ReflexTrackParser.csproj", "{F588F25C-AB52-4D1A-A874-236548AF5275}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncTrackLambda", "SyncTrackLambda\SyncTrackLambda.csproj", "{0DCC36FE-9D2A-4919-9BDD-EE116B8B4455}"
 EndProject

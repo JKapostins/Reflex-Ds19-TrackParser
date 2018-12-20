@@ -2,7 +2,7 @@
 using System.Linq;
 using TrackManagement;
 
-namespace DarkSlidesTrackListParser
+namespace ReflexTrackParser
 {
     class Program
     {
