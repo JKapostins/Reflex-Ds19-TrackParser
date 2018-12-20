@@ -36,20 +36,20 @@ namespace DarkSlidesTrackListParser
             Console.WriteLine("Processing the tracks from darkslides server. This will take some time, go grab a drink.");
             var beginTime = DateTime.Now;
             Ds19TrackListParser parser = new Ds19TrackListParser();
-            var tracks = parser.Parse();
+            var tracks = parser.ParseTracks();
 
-            var validTracks = tracks.Where(t => t.Valid == true).ToArray();
+            var validTracks = tracks.Where(t => t.Result == ProcessResult.Success).ToArray();
             Console.WriteLine(string.Format("Listing valid tracks ({0})", validTracks.Length));
-            foreach(var track in validTracks)
+            foreach (var track in validTracks)
             {
-                Console.WriteLine(string.Format("Name: {0}, Type: {1}, Slot: {2}, Url: {3}", track.TrackName, PrintTrackType(track.TrackType), track.SlotNumber, track.DarkSlidesTrackUrl));
+                Console.WriteLine(string.Format("Name: {0}, Type: {1}, Slot: {2}, Url: {3}", track.TrackName, PrintTrackType(track.TrackType), track.SlotNumber, track.TrackUrl));
             }
 
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------------------------------------------------");
             Console.WriteLine("");
 
-            var invlidTracks = tracks.Where(t => t.Valid == false).ToArray();
+            var invlidTracks = tracks.Where(t => t.Result != ProcessResult.Success).ToArray();
             Console.WriteLine(string.Format("Listing invlid tracks ({0})", invlidTracks.Length));
             foreach (var track in invlidTracks)
             {
