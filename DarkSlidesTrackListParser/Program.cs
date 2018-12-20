@@ -35,7 +35,7 @@ namespace DarkSlidesTrackListParser
         {
             Console.WriteLine("Processing the tracks from darkslides server. This will take some time, go grab a drink.");
             var beginTime = DateTime.Now;
-            TrackListParser parser = new TrackListParser();
+            Ds19TrackListParser parser = new Ds19TrackListParser();
             var tracks = parser.Parse();
 
             var validTracks = tracks.Where(t => t.Valid == true).ToArray();

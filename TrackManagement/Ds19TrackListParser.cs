@@ -7,9 +7,9 @@ using System.Net;
 
 namespace TrackManagement
 {
-    public class TrackListParser
+    public class Ds19TrackListParser
     {
-        public TrackListParser()
+        public Ds19TrackListParser()
         {
         }
 
