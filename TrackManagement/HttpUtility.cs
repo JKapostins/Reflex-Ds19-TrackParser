@@ -30,5 +30,20 @@ namespace TrackManagement
             }
             return httpResponse.StatusCode == HttpStatusCode.OK;
         }
+
+        public static T Get<T>(string url)
+        {
+            string result = string.Empty;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                result = reader.ReadToEnd();
+            }
+
+            return JsonConvert.DeserializeObject<T>(result);
+        }
     }
 }

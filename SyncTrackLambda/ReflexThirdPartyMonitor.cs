@@ -35,11 +35,13 @@ namespace SyncTrackLambda
 
         public void ReflexCentralMonitor(ILambdaContext context)
         {
+            var existingTrackNames = HttpUtility.Get<string[]>("https://spptqssmj8.execute-api.us-east-1.amazonaws.com/test/tracknames");
+
             ReflexCentralParser parser = new ReflexCentralParser();
             var tracks = parser.ParseTracks();
             var trackNames = tracks.Select(t => t.TrackName).ToArray();
 
-            //TODO: Get list of track names from our database
+            //GNARLY_TODO: call ParseTrackAndStoreInS3 to process new tracks
         }
     }
 }
