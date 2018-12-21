@@ -9,24 +9,24 @@ namespace TrackManagement
     {
         public Track ValidateTrack(Track track)
         {
-            string ext = Path.GetExtension(track.TrackUrl);
+            string ext = Path.GetExtension(track.SourceTrackUrl);
             //We can only run automation on zip files. .rar is a closed format and not accepted.
             if (ext == ".zip")
             {
-                track = PeekZipFile(track.TrackUrl, track);
+                track = PeekZipFile(track.SourceTrackUrl, track);
             }
             else
             {
                 track.ErrorInfo += string.Format("Expected .zip file, got {0} file; ", ext);
-                track.Result = ProcessResult.InvalidFileType;
+                track.Valid = false;
             }
 
             return track;
         }
 
-        private TrackType GetTrackType(string fileName)
+        private string GetTrackType(string fileName)
         {
-            TrackType type = TrackType.Unknown;
+            var type = TrackType.Unknown;
             for (int i = 0; i < 8; ++i)
             {
                 string nationalPattern = string.Format("Beta_Nat_Track", i+1);
@@ -126,13 +126,13 @@ namespace TrackManagement
             if (track.TrackType == TrackType.Unknown)
             {
                 track.ErrorInfo += "Unknown track type; ";
-                track.Result = ProcessResult.MissingTrackType;
+                track.Valid = false;
             }
 
             if (track.SlotNumber == 0)
             {
                 track.ErrorInfo += "Unknown slot; ";
-                track.Result = ProcessResult.MissingSlot;
+                track.Valid = false;
             }
 
             track = CheckForRequiredFiles(track, databaseExt, databaseCount);
@@ -148,12 +148,12 @@ namespace TrackManagement
             if (timesFileAppearsInZip == 0)
             {
                 track.ErrorInfo += string.Format("Missing *{0} file; ", fileExtention);
-                track.Result = ProcessResult.InvalidTrackCount;
+                track.Valid = false;
             }
             else if (timesFileAppearsInZip > 1)
             {
                 track.ErrorInfo += string.Format("Expecting 1 *{0} file but got {1}. Please only upload one track per zip file; ", fileExtention, timesFileAppearsInZip);
-                track.Result = ProcessResult.InvalidTrackCount;
+                track.Valid = false;
             }
             return track;
         }

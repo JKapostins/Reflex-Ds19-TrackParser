@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Linq;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace TrackManagement
 {
@@ -50,7 +51,48 @@ namespace TrackManagement
                 var imageUrl = imageNode != null ? string.Format("http://reflex-central.com/{0}", imageNode.Attributes["src"].Value) : string.Empty;
                 var authorNode = reflexProfileDoc.DocumentNode.SelectNodes("//*[@id='maincontent']/font[3]/b/a").SingleOrDefault();
                 var author = authorNode != null ? authorNode.InnerHtml.Trim() : string.Empty;
+                var dateUploadedNode = reflexProfileDoc.DocumentNode.SelectNodes("//*[@id='maincontent']/font[6]").SingleOrDefault();
+                var dateUploadedExpanded = dateUploadedNode != null ? dateUploadedNode.InnerHtml.Trim() : string.Empty;
 
+                long uploadTimestamp = 0;
+                if(dateUploadedExpanded != null)
+                {
+                    var splitDateTime = dateUploadedExpanded.Split(" - ");
+                    if (splitDateTime.Length == 2)
+                    {
+                        var date = splitDateTime[0].Trim();
+                        int firstComma = date.IndexOf(',', StringComparison.Ordinal);
+                        date = date.Remove(0, firstComma+1).Trim().Replace(",", string.Empty);
+                        var splitDate = date.Split(' ');
+
+                        string[] monthNames = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
+                        int month = Array.IndexOf(monthNames, splitDate[0]) + 1;
+                        int day = Convert.ToInt32(splitDate[1]);
+                        int year = Convert.ToInt32(splitDate[2]);
+
+                        var time = splitDateTime[1].Trim();
+                        var splitTime = time.Split(' ');
+                        var hoursMin = splitTime[0].Trim().Split(':');
+
+                        int hours = Convert.ToInt32(hoursMin[0]);
+                        int min = Convert.ToInt32(hoursMin[1]);
+
+                        var amPm = splitTime[1].Trim();
+                        if (amPm == "pm")
+                        {
+                            hours += 12;
+                        }
+                        else if(hours == 12)
+                        {
+                            hours = 0;
+                        }
+
+                        DateTime dateTime = new DateTime(year, month, day, hours, min, 0);
+                        uploadTimestamp = (long)(dateTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                    }
+                }
+
+                
                 var url = string.Format("http://reflex-central.com/tracks/{0}", trackName.Trim());
 
                 if (FileExistsOnServer(url + ".zip"))
@@ -65,9 +107,10 @@ namespace TrackManagement
                 Track track = new Track
                 {
                     TrackName = trackName,
-                    TrackUrl = url,
-                    ThumbnailUrl = imageUrl,
+                    SourceTrackUrl = url,
+                    SourceThumbnailUrl = imageUrl,
                     Author = author,
+                    CreationTime = uploadTimestamp
                 };
 
                 tracks.Add(track);

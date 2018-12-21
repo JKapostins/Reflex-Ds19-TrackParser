@@ -30,7 +30,7 @@ namespace TrackManagement
                     Track track = new Track
                     {
                         TrackName = node.InnerHtml,
-                        TrackUrl = string.Format("http://ds19.eu/{0}", hrefValue)
+                        SourceTrackUrl = string.Format("http://ds19.eu/{0}", hrefValue)
                     };
 
                     tracks.Add(track);

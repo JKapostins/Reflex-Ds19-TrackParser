@@ -19,17 +19,28 @@ namespace SyncTrackLambda.Tests
         public void TestTrackProcessor()
         {
             // Invoke the lambda function and confirm the string was upper cased.
-            var function = new Function();
+            var function = new ReflexThirdPartyMonitor();
             var context = new TestLambdaContext();
             Track testTrack = new Track
             {
                 TrackName = "Nik s National Zharikovo",
-                TrackUrl = "http://reflex-central.com/tracks/Nik%20s%20National%20Zharikovo.zip",
-                ThumbnailUrl = "http://reflex-central.com/tracks/Nik%20s%20National%20Zharikovo.jpg",
-                Author = "NikDeLion"
+                SourceTrackUrl = "http://reflex-central.com/tracks/Nik%20s%20National%20Zharikovo.zip",
+                SourceThumbnailUrl = "http://reflex-central.com/tracks/Nik%20s%20National%20Zharikovo.jpg",
+                Author = "NikDeLion",
+                CreationTime = 1458525840
             };
 
-            function.FunctionHandler(JsonConvert.SerializeObject(testTrack), context);
+            function.ParseTrackAndStoreInS3(JsonConvert.SerializeObject(testTrack), context);
+        }
+
+        [Fact]
+        public void ReflexCentralMonitor()
+        {
+            // Invoke the lambda function and confirm the string was upper cased.
+            var function = new ReflexThirdPartyMonitor();
+            var context = new TestLambdaContext();
+
+            function.ReflexCentralMonitor(context);
         }
     }
 }
