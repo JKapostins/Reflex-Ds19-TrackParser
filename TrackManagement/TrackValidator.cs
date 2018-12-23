@@ -5,15 +5,17 @@ using System.Net;
 
 namespace TrackManagement
 {
+    public delegate void ZipFileEntryDelegate(ZipArchiveEntry entry);
+
     public class TrackValidator
     {
-        public Track ValidateTrack(Track track)
+        public Track ValidateTrack(Track track, ZipFileEntryDelegate zipHandler)
         {
             string ext = Path.GetExtension(track.SourceTrackUrl);
             //We can only run automation on zip files. .rar is a closed format and not accepted.
             if (ext == ".zip")
             {
-                track = PeekZipFile(track.SourceTrackUrl, track);
+                track = PeekZipFile(track.SourceTrackUrl, track, zipHandler);
             }
             else
             {
@@ -70,7 +72,7 @@ namespace TrackManagement
             return slot;
         }
 
-        private Track PeekZipFile(string url, Track track)
+        private Track PeekZipFile(string url, Track track, ZipFileEntryDelegate zipHandler)
         {
             using (WebClient client = new WebClient())
             {
@@ -78,7 +80,7 @@ namespace TrackManagement
                 {
                     using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
                     {
-                        track = ValidateZipArchive(archive, track);
+                        track = ValidateZipArchive(archive, track, zipHandler);
                     }
                 }
             }
@@ -86,7 +88,7 @@ namespace TrackManagement
             return track;
         }
 
-        private Track ValidateZipArchive(ZipArchive archive, Track track)
+        private Track ValidateZipArchive(ZipArchive archive, Track track, ZipFileEntryDelegate zipHandler)
         {
             int databaseCount = 0;
             int levelCount = 0;
@@ -108,18 +110,34 @@ namespace TrackManagement
                         track.SlotNumber = GetSlot(entry.FullName);
                     }
                     ++databaseCount;
+                    if(databaseCount == 1)
+                    {
+                        zipHandler(entry);
+                    }
                 }
                 else if (entry.FullName.EndsWith(levelExt, StringComparison.OrdinalIgnoreCase))
                 {
                     ++levelCount;
+                    if (levelCount == 1)
+                    {
+                        zipHandler(entry);
+                    }
                 }
                 else if (entry.FullName.EndsWith(packageExt, StringComparison.OrdinalIgnoreCase))
                 {
                     ++packageCount;
+                    if (packageCount == 1)
+                    {
+                        zipHandler(entry);
+                    }
                 }
                 else if (entry.FullName.EndsWith(sceneExt, StringComparison.OrdinalIgnoreCase))
                 {
                     ++sceneCount;
+                    if (sceneCount == 1)
+                    {
+                        zipHandler(entry);
+                    }
                 }
             }
 
