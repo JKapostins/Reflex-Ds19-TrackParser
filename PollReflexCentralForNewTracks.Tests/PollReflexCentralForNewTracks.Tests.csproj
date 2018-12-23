@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SyncTrackLambda\SyncTrackLambda.csproj" />
+    <ProjectReference Include="..\PollReflexCentralForNewTracks\PollReflexCentralForNewTracks.csproj" />
   </ItemGroup>
 
 </Project>

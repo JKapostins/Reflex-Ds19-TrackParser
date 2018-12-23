@@ -11,7 +11,7 @@ using TrackManagement;
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
-namespace SyncTrackLambda
+namespace UploadReflexTrackToS3
 {
     public class UploadReflexTrackToS3
     {
@@ -43,6 +43,10 @@ namespace SyncTrackLambda
                 string imageFileName = Path.GetFileName(track.SourceThumbnailUrl).Replace("%20", " ");
                 string trackFileName = Path.GetFileName(track.SourceTrackUrl).Replace("%20", " ");
                 string bucketName = track.Valid ? "reflextracks" : "invalidreflextracks";
+                string baseDestUrl = string.Format("https://s3.amazonaws.com/{0}/{1}", bucketName, folderName).Replace(" ", "+");
+
+                track.TrackUrl = string.Format("{0}/{1}", baseDestUrl, trackFileName).Replace(" ", "+");
+                track.ThumbnailUrl = string.Format("{0}/{1}", baseDestUrl, imageFileName).Replace(" ", "+");
 
                 using (WebClient client = new WebClient())
                 {

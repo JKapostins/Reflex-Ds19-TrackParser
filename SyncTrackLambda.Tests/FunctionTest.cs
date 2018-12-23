@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using TrackManagement;
 using Xunit;
 
-namespace SyncTrackLambda.Tests
+namespace UploadReflexTrackToS3.Tests
 {
     public class FunctionTest
     {

@@ -38,12 +38,12 @@ If already installed check if new version is available.
 
 Execute unit tests
 ```
-    cd "UploadReflexTrackToS3/test/UploadReflexTrackToS3.Tests"
+    cd "PollReflexCentralForNewTracks/test/PollReflexCentralForNewTracks.Tests"
     dotnet test
 ```
 
 Deploy function to AWS Lambda
 ```
-    cd "UploadReflexTrackToS3/src/UploadReflexTrackToS3"
+    cd "PollReflexCentralForNewTracks/src/PollReflexCentralForNewTracks"
     dotnet lambda deploy-function
 ```

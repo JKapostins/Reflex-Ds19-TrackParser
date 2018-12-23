@@ -5,11 +5,15 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReflexTrackParser", "ReflexTrackParser\ReflexTrackParser.csproj", "{F588F25C-AB52-4D1A-A874-236548AF5275}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncTrackLambda", "SyncTrackLambda\SyncTrackLambda.csproj", "{0DCC36FE-9D2A-4919-9BDD-EE116B8B4455}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UploadReflexTrackToS3", "SyncTrackLambda\UploadReflexTrackToS3.csproj", "{0DCC36FE-9D2A-4919-9BDD-EE116B8B4455}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncTrackLambda.Tests", "SyncTrackLambda.Tests\SyncTrackLambda.Tests.csproj", "{AE40A822-F501-4499-81F2-CA51F7EB2293}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UploadReflexTrackToS3.Tests", "SyncTrackLambda.Tests\UploadReflexTrackToS3.Tests.csproj", "{AE40A822-F501-4499-81F2-CA51F7EB2293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackManagement", "TrackManagement\TrackManagement.csproj", "{1B23B192-A811-4F47-9DD1-5FC4E97CCE2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackManagement", "TrackManagement\TrackManagement.csproj", "{1B23B192-A811-4F47-9DD1-5FC4E97CCE2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PollReflexCentralForNewTracks", "PollReflexCentralForNewTracks\PollReflexCentralForNewTracks.csproj", "{514CB9FD-D701-4A7A-AF7A-E5A923BCA57F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PollReflexCentralForNewTracks.Tests", "PollReflexCentralForNewTracks.Tests\PollReflexCentralForNewTracks.Tests.csproj", "{35C7DF6B-9C91-4179-A6C9-018A9064366B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{1B23B192-A811-4F47-9DD1-5FC4E97CCE2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B23B192-A811-4F47-9DD1-5FC4E97CCE2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B23B192-A811-4F47-9DD1-5FC4E97CCE2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{514CB9FD-D701-4A7A-AF7A-E5A923BCA57F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{514CB9FD-D701-4A7A-AF7A-E5A923BCA57F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{514CB9FD-D701-4A7A-AF7A-E5A923BCA57F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{514CB9FD-D701-4A7A-AF7A-E5A923BCA57F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35C7DF6B-9C91-4179-A6C9-018A9064366B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35C7DF6B-9C91-4179-A6C9-018A9064366B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35C7DF6B-9C91-4179-A6C9-018A9064366B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35C7DF6B-9C91-4179-A6C9-018A9064366B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
