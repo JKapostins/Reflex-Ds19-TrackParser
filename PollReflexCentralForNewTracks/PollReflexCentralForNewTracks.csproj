@@ -11,4 +11,8 @@
     <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="1.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TrackManagement\TrackManagement.csproj" />
+  </ItemGroup>
+
 </Project>

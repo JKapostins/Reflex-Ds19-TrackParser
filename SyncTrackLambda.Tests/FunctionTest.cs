@@ -22,18 +22,9 @@ namespace UploadReflexTrackToS3.Tests
                 Author = "NikDeLion",
                 CreationTime = 1458525840
             };
-
-            function.FunctionHandler(JsonConvert.SerializeObject(testTrack), context);
+            var tester = JsonConvert.SerializeObject(testTrack);
+            function.FunctionHandler(testTrack, context);
         }
 
-        [Fact]
-        public void ReflexCentralMonitor()
-        {
-            // Invoke the lambda function and confirm the string was upper cased.
-            var function = new UploadReflexTrackToS3();
-            var context = new TestLambdaContext();
-
-            function.ReflexCentralMonitor(context);
-        }
     }
 }

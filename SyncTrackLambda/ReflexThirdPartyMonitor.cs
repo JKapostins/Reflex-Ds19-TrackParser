@@ -15,11 +15,10 @@ namespace UploadReflexTrackToS3
 {
     public class UploadReflexTrackToS3
     {
-        public void FunctionHandler(string input, ILambdaContext context)
+        public void FunctionHandler(Track track, ILambdaContext context)
         {
             try
             {
-                Track track = JsonConvert.DeserializeObject<Track>(input);
                 TrackValidator validator = new TrackValidator();
                 MemoryStream zipStream = new MemoryStream();
                 ZipArchive zipArchive = new ZipArchive(zipStream, ZipArchiveMode.Create, true);
@@ -77,28 +76,6 @@ namespace UploadReflexTrackToS3
                 context.Logger.LogLine(string.Format("Processing {0} is complete!", track.TrackName));
             }
             catch (Exception e)
-            {
-                context.Logger.LogLine(e.Message);
-            }
-        }
-
-        public void ReflexCentralMonitor(ILambdaContext context)
-        {
-            try
-            {
-                var existingTrackNames = HttpUtility.Get<string[]>("https://spptqssmj8.execute-api.us-east-1.amazonaws.com/test/tracknames");
-
-                ReflexCentralParser parser = new ReflexCentralParser();
-                var tracks = parser.ParseTracks();
-                var newTracks = tracks.Where(t => existingTrackNames.Any(e => e == t.TrackName) == false).ToArray();
-
-                foreach(var track in newTracks)
-                {
-                    //GNARLY_TODO: call ParseTrackAndStoreInS3 to process new tracks
-                }
-
-            }
-            catch(Exception e)
             {
                 context.Logger.LogLine(e.Message);
             }

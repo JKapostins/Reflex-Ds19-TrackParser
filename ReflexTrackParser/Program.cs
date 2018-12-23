@@ -8,31 +8,29 @@ namespace ReflexTrackParser
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Processing the tracks from darkslides server. This will take some time, go grab a drink.");
-            var beginTime = DateTime.Now;
-            Ds19TrackListParser parser = new Ds19TrackListParser();
-            var tracks = parser.ParseTracks();
-
-            var validTracks = tracks.Where(t => t.Valid == true).ToArray();
-            Console.WriteLine(string.Format("Listing valid tracks ({0})", validTracks.Length));
-            foreach (var track in validTracks)
+            try
             {
-                Console.WriteLine(string.Format("Name: {0}, Type: {1}, Slot: {2}, Url: {3}", track.TrackName, track.TrackType, track.SlotNumber, track.SourceTrackUrl));
+                Console.WriteLine("Fetching tracks from reflex central...");
+                ReflexCentralParser parser = new ReflexCentralParser();
+                var tracks = parser.ParseTracks();
+
+                Console.WriteLine("Fetching tracks from our databse...");
+                var existingTrackNames = HttpUtility.Get<string[]>("https://spptqssmj8.execute-api.us-east-1.amazonaws.com/test/tracknames");
+
+                Console.WriteLine("Filtering out existing tracks...");
+                var newTracks = tracks.Where(t => existingTrackNames.Any(e => e == t.TrackName) == false).ToArray();
+                foreach (var track in newTracks)
+                {
+                    Console.WriteLine(string.Format("Processing {0}...", track.TrackName));
+                    HttpUtility.Post("https://spptqssmj8.execute-api.us-east-1.amazonaws.com/test/uploadtrack", track);
+                }
+                Console.WriteLine("Processing Complete!");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------------------------------------------------");
-            Console.WriteLine("");
-
-            var invlidTracks = tracks.Where(t => t.Valid == false).ToArray();
-            Console.WriteLine(string.Format("Listing invlid tracks ({0})", invlidTracks.Length));
-            foreach (var track in invlidTracks)
-            {
-                Console.WriteLine(string.Format("Name: {0}, Type: {1}, Slot: {2}, Reason: {3}", track.TrackName, track.TrackType, track.SlotNumber, track.ErrorInfo));
-            }
-
-            var endTime = DateTime.Now;
-            Console.WriteLine(string.Format("The process took {0} seconds to complete.", endTime.Second - beginTime.Second));
         }
     }
 }
