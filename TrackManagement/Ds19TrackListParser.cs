@@ -13,6 +13,11 @@ namespace TrackManagement
         {
         }
 
+        public override Track ParseTrack(string url)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Track[] ParseTracks()
         {
             List<Track> tracks = new List<Track>();

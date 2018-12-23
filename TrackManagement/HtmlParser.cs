@@ -1,13 +1,11 @@
-﻿using System;
-using System.IO;
-using System.IO.Compression;
-using System.Net;
+﻿using System.Net;
 
 namespace TrackManagement
 {
     public abstract class HtmlParser
     {
         public abstract Track[] ParseTracks();
+        public abstract Track ParseTrack(string url);
 
         protected virtual string GetHtml(string url)
         {
