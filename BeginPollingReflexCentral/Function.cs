@@ -1,18 +1,14 @@
-using Amazon;
-using Amazon.Lambda.Core;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Net;
+using System.Threading.Tasks;
 using TrackManagement;
+using Amazon.Lambda.Core;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
-namespace PollReflexCentralForNewTracks
+namespace BeginPollingReflexCentral
 {
     public class Function
     {
@@ -23,11 +19,11 @@ namespace PollReflexCentralForNewTracks
         /// <param name="input"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public void FunctionHandler(Amazon.Lambda.SQSEvents.SQSEvent sqsEvent, ILambdaContext context)
+        public void FunctionHandler(ILambdaContext context)
         {
             try
-            {                
-                PollTracks.Poll(sqsEvent, context, false);
+            {
+                PollTracks.Poll(null, context, true);
             }
             catch (Exception e)
             {
@@ -35,6 +31,5 @@ namespace PollReflexCentralForNewTracks
                 context.Logger.LogLine(e.StackTrace);
             }
         }
-        
     }
 }

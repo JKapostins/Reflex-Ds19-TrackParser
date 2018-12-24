@@ -76,7 +76,8 @@ namespace TrackManagement
                 }
             }
 
-            var sourceUrl = string.Format("http://reflex-central.com/tracks/{0}", trackName);
+            //All the tracks on reflex central seem to have a space after the name.
+            var sourceUrl = string.Format("http://reflex-central.com/tracks/{0} ", trackName);
 
             if (FileExistsOnServer(sourceUrl + ".zip"))
             {

@@ -1,5 +1,6 @@
 using Amazon;
 using Amazon.Lambda.Core;
+using Amazon.Lambda.SQSEvents;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -15,10 +16,21 @@ namespace UploadReflexTrackToS3
 {
     public class UploadReflexTrackToS3
     {
-        public void FunctionHandler(Track track, ILambdaContext context)
+        public void FunctionHandler(SQSEvent sqsEvent, ILambdaContext context)
         {
             try
             {
+                if (sqsEvent.Records.Count != 1)
+                {
+                    throw new Exception(string.Format("Recived {0} records to process. Only 1 is supported.", sqsEvent.Records.Count));
+                }
+
+                var track = JsonConvert.DeserializeObject<Track>(sqsEvent.Records[0].Body);
+                if (track == null)
+                {
+                    throw new Exception("There was an error parsing the lambda input");
+                }
+
                 TrackValidator validator = new TrackValidator();
                 MemoryStream zipStream = new MemoryStream();
                 ZipArchive zipArchive = new ZipArchive(zipStream, ZipArchiveMode.Create, true);
