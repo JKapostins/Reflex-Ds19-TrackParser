@@ -38,7 +38,7 @@ namespace UploadReflexTrackToS3
                 context.Logger.LogLine(string.Format("Beginning to process {0}", track.TrackName));
                 track = validator.ValidateTrack(track, (e) =>
                 {
-                    var destFile = zipArchive.CreateEntry(e.FullName);
+                    var destFile = zipArchive.CreateEntry(e.Name);
 
                     using (var destStream = destFile.Open())
                     using (var srcStream = e.Open())
